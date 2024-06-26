@@ -26,9 +26,11 @@ struct LinearRegression {
 }
 
 impl LinearRegression {
-    // Prediect on a trained model
-    fn predict(&self, inputs: &[f32]) -> f32 {
-        //TODO Throw error when input length is <= 0
+    // Predict on a trained model
+    fn predict(&self, inputs: &[f32]) -> Option<f32> {
+        if inputs.len() <= 0 {
+            return None
+        }
         let mut result: f32 = 0.0;
 
         let mut index = 0;
@@ -38,7 +40,7 @@ impl LinearRegression {
         }
 
         result = result + self.beta;
-        result
+        Some(result)
     }
 
     // Train the linear regression model
@@ -52,7 +54,7 @@ impl LinearRegression {
             learning_rate,
             epochs,
         }
-}
+    }
 
 }
 
