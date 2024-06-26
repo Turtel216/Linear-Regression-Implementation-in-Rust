@@ -43,15 +43,17 @@ impl LinearRegression {
 
     // Train the linear regression model
     fn trainModel(&self, train_data: [f32], result: [32]) -> () {}
+
+    // Function to build a new model
+    fn model(beta: f32, weight: [f32], learning_rate: f32, epochs: i64) -> Self {
+        LinearRegression {
+            beta,
+            weight,
+            learning_rate,
+            epochs,
+        }
 }
 
-fn build_model(beta: f32, weight: [f32], learning_rate: f32, epochs: i64) -> LinearRegression {
-    LinearRegression {
-        beta,
-        weight,
-        learning_rate,
-        epochs,
-    }
 }
 
 fn main() {}
