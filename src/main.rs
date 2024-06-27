@@ -101,7 +101,7 @@ fn main() {
     .to_vec();
     let result = [88.6, 71.6, 93.3, 84.3, 80.6, 75.2].to_vec();
 
-    let mut _model = LinearRegression::model(0.0, 1, 0.001, 1000);
+    let mut _model = LinearRegression::model(0.0, train_set[0].len(), 0.001, 1000);
 
     _model.train_model(&train_set, &result);
 
