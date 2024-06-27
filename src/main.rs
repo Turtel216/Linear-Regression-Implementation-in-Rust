@@ -4,13 +4,13 @@ I am learning the language as I develop
 this project. I am probably going to refactor
 this code a bunch. Please be gentle ᴖ̈
 
-              ＿＿
-🌸＞　　フ
-| 　_　 _l
-／` ミ＿xノ
-/　　　 　 |
-/　 ヽ　　 ﾉ
-│　　|　|　|
+       ＿＿
+    🌸＞　　フ
+    | 　_　 _l
+    ／` ミ＿xノ
+    /　　　 　 |
+    /　 ヽ　　 ﾉ
+    │　　|　|　|
 ／￣|　　 |　|　|
 | (￣ヽ＿_ヽ_)__)
 ＼二つ
