@@ -44,7 +44,7 @@ impl LinearRegression {
     }
 
     // Train the linear regression model
-    fn train_model(&mut self, training_data: Vec<Vec<f32>>, result: Vec<f32>) -> () {
+    fn train_model(&mut self, training_data: &Vec<Vec<f32>>, result: &Vec<f32>) -> () {
         if training_data.len() <= 0 {
             // throw error
         }
@@ -52,19 +52,18 @@ impl LinearRegression {
         for _e in 0..self.epochs {
             let mut _mse: f32 = 0.0;
 
-            for i in 0..training_data.len() {
-                let temp_input: &[f32] = &training_data[i];
-
-                let _predicted_value = match self.predict(temp_input) {
+            for i in 0..training_data.len() - 1 {
+                let _predicted_value = match self.predict(&training_data[i]) {
                     Some(prediction) => prediction,
-                    _ => 0.0, //TODO handle error
+                    _ => panic!("Couldn't predict any value"),
                 };
 
                 let error = _predicted_value - result[i];
                 _mse = error * error + _mse;
 
-                for j in 0..self.weight.len() {
-                    self.weight[j] = self.weight[j] - self.learning_rate * error * temp_input[j];
+                for j in 0..self.weight.len() - 1 {
+                    self.weight[j] =
+                        self.weight[j] - self.learning_rate * error * training_data[i][j];
                 }
 
                 self.beta = self.beta - self.learning_rate * error;
@@ -75,7 +74,12 @@ impl LinearRegression {
     }
 
     // Function to build a new model
-    fn model(beta: f32, weight: Vec<f32>, learning_rate: f32, epochs: i64) -> Self {
+    fn model(beta: f32, feature_length: usize, learning_rate: f32, epochs: i64) -> Self {
+        let mut weight: Vec<f32> = vec![];
+
+        for _i in 0..feature_length {
+            weight.push(0.0);
+        }
         LinearRegression {
             beta,
             weight,
@@ -85,4 +89,24 @@ impl LinearRegression {
     }
 }
 
-fn main() {}
+fn main() {
+    let train_set = [
+        [30.0].to_vec(),
+        [16.0].to_vec(),
+        [19.8].to_vec(),
+        [18.4].to_vec(),
+        [17.1].to_vec(),
+        [15.5].to_vec(),
+    ]
+    .to_vec();
+    let result = [88.6, 71.6, 93.3, 84.3, 80.6, 75.2].to_vec();
+
+    let mut _model = LinearRegression::model(0.0, 1, 0.001, 1000);
+
+    _model.train_model(&train_set, &result);
+
+    match _model.predict(&[20.0]) {
+        Some(prediction) => println!("For 20.0, the model predicted: {prediction}"),
+        None => println!("No prediction returned"),
+    };
+}
