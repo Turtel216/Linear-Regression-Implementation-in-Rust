@@ -19,19 +19,19 @@ this code a bunch. Please be gentle ᴖ̈
 */
 
 struct LinearRegression {
-    beta: f32,
-    weight: Vec<f32>,
-    learning_rate: f32,
-    epochs: i64,
+    beta: f64,
+    weight: Vec<f64>,
+    learning_rate: f64,
+    epochs: u64,
 }
 
 impl LinearRegression {
     // Predict on a trained model
-    fn predict(&self, inputs: &[f32]) -> Option<f32> {
+    fn predict(&self, inputs: &[f64]) -> Option<f64> {
         if inputs.len() <= 0 {
             return None;
         }
-        let mut result: f32 = 0.0;
+        let mut result: f64 = 0.0;
 
         let mut index = 0;
         while index < inputs.len() {
@@ -44,13 +44,13 @@ impl LinearRegression {
     }
 
     // Train the linear regression model
-    fn train_model(&mut self, training_data: &Vec<Vec<f32>>, result: &Vec<f32>) -> () {
+    fn train_model(&mut self, training_data: &Vec<Vec<f64>>, result: &Vec<f64>) -> () {
         if training_data.len() <= 0 {
-            // throw error
+            panic!("No valid training data to train on");
         }
 
         for _e in 0..self.epochs {
-            let mut _mse: f32 = 0.0;
+            let mut _mse: f64 = 0.0;
 
             for i in 0..training_data.len() - 1 {
                 let _predicted_value = match self.predict(&training_data[i]) {
@@ -69,17 +69,14 @@ impl LinearRegression {
                 self.beta = self.beta - self.learning_rate * error;
             }
 
-            _mse = f32::sqrt(_mse) / training_data.len() as f32;
+            _mse = f64::sqrt(_mse) / training_data.len() as f64;
         }
     }
 
     // Function to build a new model
-    fn model(beta: f32, feature_length: usize, learning_rate: f32, epochs: i64) -> Self {
-        let mut weight: Vec<f32> = vec![];
+    fn model(beta: f64, feature_length: usize, learning_rate: f64, epochs: u64) -> Self {
+        let weight: Vec<f64> = vec![0.0; feature_length];
 
-        for _i in 0..feature_length {
-            weight.push(0.0);
-        }
         LinearRegression {
             beta,
             weight,
@@ -90,23 +87,22 @@ impl LinearRegression {
 }
 
 fn main() {
-    let train_set = [
-        [30.0].to_vec(),
-        [16.0].to_vec(),
-        [19.8].to_vec(),
-        [18.4].to_vec(),
-        [17.1].to_vec(),
-        [15.5].to_vec(),
-    ]
-    .to_vec();
-    let result = [88.6, 71.6, 93.3, 84.3, 80.6, 75.2].to_vec();
+    let train_set = vec![
+        vec![30.0],
+        vec![16.0],
+        vec![19.8],
+        vec![18.4],
+        vec![17.1],
+        vec![15.5],
+    ];
+    let result = vec![88.6, 71.6, 93.3, 84.3, 80.6, 75.2];
 
     let mut _model = LinearRegression::model(0.0, train_set[0].len(), 0.001, 1000);
 
     _model.train_model(&train_set, &result);
 
-    match _model.predict(&[20.0]) {
-        Some(prediction) => println!("For 20.0, the model predicted: {prediction}"),
+    match _model.predict(&[30.0]) {
+        Some(prediction) => println!("For 30.0, the model predicted: {prediction}"),
         None => println!("No prediction returned"),
     };
 }
